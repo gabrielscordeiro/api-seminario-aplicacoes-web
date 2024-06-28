@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_container
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"  # Expondo a porta 80 do contêiner na porta 8080 do host
+    depends_on:
+      - postgres
+
+  postgres:
+    image: bitnami/postgresql:latest
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=seminario_web
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
+volumes:
+  postgres_data:
